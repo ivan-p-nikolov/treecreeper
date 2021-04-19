@@ -2,15 +2,15 @@
 
 _Note that yaml files are indented with two spaces_
 
--   [Types](#types)
--   [Properties on existing types](#property-definitions)
--   [Primitive Types](#primitive-types)
--   [Relationships](#relationship-property-definitions) (which are expressed as a special kind of property)
--   [Custom cypher properties](#custom-cypher-properties)
--   [Enums](#enums) (aka drop down options)
--   [String validation rules](#string-validation-rules)
--   [Type Hierarchy](#type-hierarchy)
--   [Rich Relationships](#rich-relationships) i.e. relationships annotated with properties
+- [Types](#types)
+- [Properties on existing types](#property-definitions)
+- [Primitive Types](#primitive-types)
+- [Relationships](#relationship-property-definitions) (which are expressed as a special kind of property)
+- [Custom cypher properties](#custom-cypher-properties)
+- [Enums](#enums) (aka drop down options)
+- [String validation rules](#string-validation-rules)
+- [Type Hierarchy](#type-hierarchy)
+- [Rich Relationships](#rich-relationships) i.e. relationships annotated with properties
 
 ## Types
 
@@ -81,11 +81,11 @@ All the options for [property definitions](#property-definitions) apply to relat
 For relationships which should be annotated with their own properties, see the section on [rich relationships](#rich-relationships)
 
 | name          | required | default                                                                            | details                                                                                                                                                                                                                                                                                                                                                          | examples                      |
-| ------------- | -------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | --- | --- |
+| ------------- | -------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | type          | true     | Unlike for ordinary properties, this must be the name of some other [type](#types) | `CostCentre`, `System`                                                                                                                                                                                                                                                                                                                                           |
 | relationship  | yes      |                                                                                    | The name of the underlying neo4j relationship. This should be all upper case, with words separated by underscores. It is hidden from the public APIs, and requires some familiarity with the underlying data. See existing type yaml files for examples, or ask for guidance in the [biz ops slack channel](https://financialtimes.slack.com/messages/C9S0V2KPV) | `HAS_TEAM_MEMBER`, `PAYS_FOR` |
 | direction     | yes      |                                                                                    | Whether the underlying relationship should point away from – `outgoing` – or to – `incoming` – the record. Again, this requires familiarity with the underlying data. Please see existing examples or ask for help in the [biz ops slack channel](https://financialtimes.slack.com/messages/C9S0V2KPV)                                                           | `outgoing`, `incoming`        |
-| hasMany       | no       | `false`                                                                            | Boolean indicating whether or not the record can be related in this way to more than one other record. If in doubt, set to `true`,                                                                                                                                                                                                                               |                               |     |     |
+| hasMany       | no       | `false`                                                                            | Boolean indicating whether or not the record can be related in this way to more than one other record. If in doubt, set to `true`,                                                                                                                                                                                                                               |                               |  |  |
 | showInactive  | no       | `true`                                                                             | Boolean indicating whether it is preferable to show or hide relationships to inactive records. Can be used as a hint by any UI                                                                                                                                                                                                                                   |
 | writeInactive | no       | `false`                                                                            | Boolean indicating whether it is possible to write relationships to inactive records. Can be used as a hint by any UI or system writing to Biz Ops, but does not, at this stage, prevent writing at the API level                                                                                                                                                |
 
@@ -94,8 +94,8 @@ For relationships which should be annotated with their own properties, see the s
 **Experimental**
 Properties can contain the result of any cypher query run against the database. In order to do so add a `cypher` property to the property definition. This should contain a cypher query that returns either
 
--   one or more neo4j records, in which case the `type` of this property should be the same as the type of record returned, and `hasMany: true` may also be defined in order to indicate the return of multiple records
--   Some neo4j primitive value, in which case the `type` of this property should be a primitive type or an enum.
+- one or more neo4j records, in which case the `type` of this property should be the same as the type of record returned, and `hasMany: true` may also be defined in order to indicate the return of multiple records
+- Some neo4j primitive value, in which case the `type` of this property should be a primitive type or an enum.
 
 Note that, in most cases, you will want to 'anchor' your cypher query at the current record, so will need to use the `this` reference in it. See the [GRANDstack docs](https://grandstack.io/docs/neo4j-graphql-js.html#cypher-directive) for more details.
 
@@ -104,9 +104,9 @@ Note that, in most cases, you will want to 'anchor' your cypher query at the cur
 Fieldsets group properties with other properties that are related to them e.g. all the properties defining relationships between systems might be grouped in a `relatedSystems` fieldset. This structure is not used in the underlying data store, but is rather applied at a later stage by anything using the data. Fieldsets are defined using objects with the following properties
 
 | name        | required | default details | examples                                                     |
-| ----------- | -------- | --------------- | ------------------------------------------------------------ | --- |
-| heading     | yes      |                 | The text to use as a heading for the group of properties     |     |
-| description | no       |                 | The text to use as a description for the group of properties |     |
+| ----------- | -------- | --------------- | ------------------------------------------------------------ |
+| heading     | yes      |                 | The text to use as a heading for the group of properties     |  |
+| description | no       |                 | The text to use as a description for the group of properties |  |
 
 ### Example type file
 
@@ -140,10 +140,10 @@ fieldsets:
 
 These are expressed as regular expressions and are used to (optionally) validate values. Define a pattern in `string-patterns.yaml` by adding a property to the yaml file observing the following rules:
 
--   The property name must be in CONSTANT_CASE
--   The value must be either
-    -   a string that, when converted to a JavaScript regular expression, carries out the required string validation
-    -   a object with two properties, `pattern` and `flags` which are used to create a regular expression with flags
+- The property name must be in CONSTANT_CASE
+- The value must be either
+  - a string that, when converted to a JavaScript regular expression, carries out the required string validation
+  - a object with two properties, `pattern` and `flags` which are used to create a regular expression with flags
 
 ## Enums
 
